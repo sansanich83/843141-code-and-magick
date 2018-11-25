@@ -7,6 +7,7 @@ var PILE_BAR = 150;
 var PILE_TOP = 70;
 var PILE_WIDTH = 40;
 var PILE_GAP = 50;
+var NAMES_Y = 240;
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -27,6 +28,12 @@ var getRandomOpacity = function (min, max) {
   return Math.random() * (max - min) + min;
 };
 
+var getRandomBlue = function () {
+  var randomOpacity = getRandomOpacity(0.1, 1);
+  var randomBlue = 'rgba(0, 0, 255,' + randomOpacity + ')';
+  return randomBlue;
+};
+
 window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, 110, 20, 'rgba(0, 0, 0, 0.7)');
   renderCloud(ctx, 100, 10, '#fff');
@@ -39,18 +46,11 @@ window.renderStatistics = function (ctx, names, times) {
   var timesY = 60;
   var pileY = 70;
   var pileHeight = 150;
-  var namesY = 240;
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < names.length; i++) {
-    ctx.fillText(names[i], playerStatX, namesY);
-    if (names[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
-      var randomOpacity = getRandomOpacity(0.1, 1);
-      var randomBlue = 'rgba' + '(0, 0, 255,' + randomOpacity + ')';
-      ctx.fillStyle = randomBlue;
-    }
+    ctx.fillText(names[i], playerStatX, NAMES_Y);
+    ctx.fillStyle = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : getRandomBlue();
     pileHeight = times[i] / maxTime * PILE_BAR;
     pileY = PILE_TOP + (PILE_BAR - pileHeight);
     ctx.fillRect(playerStatX, pileY, PILE_WIDTH, pileHeight);
